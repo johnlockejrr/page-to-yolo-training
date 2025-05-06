@@ -31,7 +31,8 @@ python train.py \
     --val \
     --plots
 ```
-
+Metrics:
+![image](https://github.com/user-attachments/assets/4372c43e-3495-493c-91c4-3fc77fb42a2e)
 ### 4. `train_improved.py`
 Enhanced training script with improved augmentation and training parameters.
 
