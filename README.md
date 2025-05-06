@@ -1,8 +1,8 @@
 # Text Line Segmentation with YOLO11
 
-This repository contains scripts for converting PAGE-XML annotations to YOLO format and training a YOLO11 model for text line segmentation.
+This repository contains scripts for training and using YOLO11 models for text line segmentation in historical documents.
 
-## Scripts
+## Scripts Overview
 
 ### 1. `convert_page_to_yolo.py`
 Converts PAGE-XML annotations to YOLO format for segmentation training.
@@ -11,49 +11,60 @@ Converts PAGE-XML annotations to YOLO format for segmentation training.
 python convert_page_to_yolo.py input_dir output_dir --target-height 640 --element-type textline
 ```
 
-Arguments:
-- `input_dir`: Directory containing PAGE-XML files
-- `output_dir`: Directory to save YOLO format annotations
-- `--target-height`: Target image height (default: 640)
-- `--element-type`: Type of element to extract ('textline' or 'zone')
-
 ### 2. `visualize_masks.py`
 Visualizes YOLO segmentation masks on images.
 
 ```bash
-python visualize_masks.py image_path label_path [--output output_path] [--color B G R] [--thickness N]
+python visualize_masks.py --dataset /path/to/dataset --output-dir /path/to/output
 ```
-
-Arguments:
-- `image_path`: Path to the input image
-- `label_path`: Path to the YOLO format label file
-- `--output`: Path to save the visualization (optional)
-- `--color`: BGR color values for the mask (default: 0 255 0)
-- `--thickness`: Line thickness for the mask (default: 2)
 
 ### 3. `train.py`
-Trains a YOLO11 model for text line segmentation.
+Basic training script for YOLO11 segmentation models.
 
 ```bash
-python train.py --dataset dataset_path --model-size m --batch-size 8
+python train.py \
+    --dataset /path/to/dataset \
+    --model-size m \
+    --batch-size 8 \
+    --epochs 100 \
+    --pretrained \
+    --val \
+    --plots
 ```
 
-Required arguments:
-- `--dataset`: Path to dataset directory containing dataset.yaml
-- `--model-size`: Model size (n=nano, s=small, m=medium, l=large, x=xlarge)
-- `--batch-size`: Batch size for training
+### 4. `train_improved.py`
+Enhanced training script with improved augmentation and training parameters.
 
-Optional arguments:
-- `--epochs`: Number of training epochs (default: 100)
-- `--device`: Device to use (e.g., "0" for GPU 0, "cpu" for CPU)
-- `--workers`: Number of worker threads (default: 8)
-- `--project`: Project directory (default: runs/train)
-- `--name`: Experiment name (default: exp)
-- `--pretrained`: Use pretrained weights
-- `--optimizer`: Optimizer to use (default: auto)
-- `--amp`: Use automatic mixed precision
-- `--val`: Validate training results
-- `--plots`: Plot training results
+```bash
+python train_improved.py \
+    --dataset /path/to/dataset \
+    --model-size m \
+    --batch-size 12 \
+    --epochs 100 \
+    --pretrained \
+    --val \
+    --plots
+```
+
+Key improvements in `train_improved.py`:
+- Enhanced augmentation (mosaic, mixup, copy-paste)
+- Better learning rate scheduling
+- Improved regularization
+- Optimized for segmentation performance
+
+### 5. `app.py`
+Interactive Gradio web interface for model inference.
+
+```bash
+python app.py
+```
+
+Features:
+- Lists all available model checkpoints from `runs/train/`
+- Upload images for prediction
+- Toggle between mask and bounding box visualization
+- Adjust confidence threshold
+- Real-time visualization
 
 ## Dataset Structure
 
@@ -78,20 +89,38 @@ names:
   0: textline
 ```
 
-## Training Progress
+## Training Progress Metrics
+- Box Loss: Detection accuracy
+- Mask Loss: Segmentation quality
+- Precision: Accuracy of detections
+- Recall: Coverage of text lines
+- mAP50: Mean Average Precision at 50% IoU
+- mAP50-95: Mean Average Precision at various IoU thresholds
 
-The training script provides detailed metrics:
-- Box and segmentation losses
-- Precision and recall for both detection and segmentation
-- mAP50 and mAP50-95 scores
-- GPU memory usage and training speed
+## Visualization Features
+- Green masks for text lines
+- Red bounding boxes (optional)
+- Confidence scores
+- Interactive web interface
 
-## Visualization
+## Important Notes
+- The model is trained for single-class text line segmentation
+- Supports various YOLO11 model sizes (n, s, m, l, x)
+- Automatic mixed precision training is enabled
+- Cosine learning rate scheduling is used
+- Data augmentation is optimized for document images
 
-The visualization script helps verify:
-- Text line detection accuracy
-- Segmentation mask quality
-- Overall model performance
+## Hardware Requirements
+- NVIDIA GPU with at least 12GB VRAM recommended
+- Batch size should be adjusted based on available GPU memory
+- For RTX 3060 12GB, recommended batch size is 8-12 for YOLO11m
+
+## Model Performance
+The model achieves high accuracy in text line segmentation with:
+- High precision and recall
+- Accurate mask boundaries
+- Good handling of various text line orientations
+- Robust performance on different document styles
 
 ## Notes
 
