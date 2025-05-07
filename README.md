@@ -11,14 +11,21 @@ Converts PAGE-XML annotations to YOLO format for segmentation training.
 python convert_page_to_yolo.py input_dir output_dir --target-height 640 --element-type textline
 ```
 
-### 2. `visualize_masks.py`
+### 2. `convert_alto_to_yolo.py`
+Converts ALTO-XML annotations to YOLO format for segmentation training.
+
+```bash
+python convert_alto_to_yolo.py input_dir output_dir --target-height 640 --element-type textline
+```
+
+### 3. `visualize_masks.py`
 Visualizes YOLO segmentation masks on images.
 
 ```bash
 python visualize_masks.py --dataset /path/to/dataset --output-dir /path/to/output
 ```
 
-### 3. `train.py`
+### 4. `train.py`
 Basic training script for YOLO11 segmentation models.
 
 ```bash
@@ -33,7 +40,7 @@ python train.py \
 ```
 Metrics:
 ![image](https://github.com/user-attachments/assets/4372c43e-3495-493c-91c4-3fc77fb42a2e)
-### 4. `train_improved.py`
+### 5. `train_improved.py`
 Enhanced training script with improved augmentation and training parameters.
 
 ```bash
@@ -55,7 +62,7 @@ Key improvements in `train_improved.py`:
 
 Metrics:
 ![image](https://github.com/user-attachments/assets/93bcc69c-847f-4496-b20b-f2b3f240a4cb)
-### 5. `app.py`
+### 6. `app.py`
 Interactive Gradio web interface for model inference.
 
 ```bash
