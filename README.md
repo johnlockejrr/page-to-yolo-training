@@ -75,6 +75,11 @@ Features:
 - Toggle between mask and bounding box visualization
 - Adjust confidence threshold
 - Real-time visualization
+### 7. `plot_yolo_metrics.py`
+A script to make a plot from YOLO train `results.csv` metrics.
+```bash
+python plot_yolo_metrics.py runs/segment/sam_yolo11-seg/results.csv plot.png
+```
 
 ## Dataset Structure
 
