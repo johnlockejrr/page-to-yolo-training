@@ -52,7 +52,8 @@ Key improvements in `train_improved.py`:
 - Better learning rate scheduling
 - Improved regularization
 - Optimized for segmentation performance
-
+Metrics:
+![image](https://github.com/user-attachments/assets/93bcc69c-847f-4496-b20b-f2b3f240a4cb)
 ### 5. `app.py`
 Interactive Gradio web interface for model inference.
 
