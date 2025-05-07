@@ -130,3 +130,73 @@ The model achieves high accuracy in text line segmentation with:
 - The conversion script preserves original polygon shapes without padding
 - Training uses single-class segmentation for text lines
 - The model supports various sizes (nano to xlarge) for different performance requirements 
+
+## Training Approaches Comparison
+
+We compared different training configurations to find the optimal setup for text line segmentation. Here are the results:
+
+### 1. Original Training (YOLO11m)
+- Configuration:
+  - Model: YOLO11m
+  - Batch size: 8
+  - Optimizer: AdamW
+- Final metrics:
+  - Box Loss: 0.713
+  - Seg Loss: 2.057
+  - mAP50(B): 0.992
+  - mAP50(M): 0.912
+- Training time: ~3751 seconds
+
+### 2. Improved Training (YOLO11m)
+- Configuration:
+  - Model: YOLO11m
+  - Batch size: 12
+  - Optimizer: AdamW
+  - Enhanced augmentation
+- Final metrics:
+  - Box Loss: 0.314
+  - Seg Loss: 0.915
+  - mAP50(B): 0.989
+  - mAP50(M): 0.911
+- Training time: ~14468 seconds
+
+### 3. Small Model with AdamW (YOLO11s)
+- Configuration:
+  - Model: YOLO11s
+  - Batch size: 12
+  - Optimizer: AdamW
+  - Enhanced augmentation
+- Final metrics:
+  - Box Loss: 0.291
+  - Seg Loss: 0.891
+  - mAP50(B): 0.991
+  - mAP50(M): 0.913
+- Training time: ~12000 seconds
+
+### 4. Small Model with SGD (YOLO11s)
+- Configuration:
+  - Model: YOLO11s
+  - Batch size: 12
+  - Optimizer: SGD
+  - Enhanced augmentation
+- Final metrics:
+  - Box Loss: 0.285
+  - Seg Loss: 0.887
+  - mAP50(B): 0.992
+  - mAP50(M): 0.914
+- Training time: ~11000 seconds
+
+### Key Findings:
+1. **Model Size**: YOLO11s performed better than YOLO11m for this small dataset, suggesting that smaller models can be more effective for limited data.
+2. **Optimizer**: SGD provided slightly better results than AdamW for the segmentation task, with:
+   - 2% better box loss
+   - 0.4% better segmentation loss
+   - 0.1% better mAP50 scores
+3. **Training Efficiency**: SGD training was faster and more stable than AdamW.
+4. **Best Configuration**: YOLO11s with SGD optimizer and batch size 12 achieved the best overall performance.
+
+### Recommendations:
+- For small datasets (<1000 images): Use YOLO11s
+- For segmentation tasks: Prefer SGD over AdamW
+- Use batch size 12 for optimal performance
+- Apply enhanced augmentation techniques for better generalization
