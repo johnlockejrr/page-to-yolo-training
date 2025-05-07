@@ -76,7 +76,7 @@ Features:
 - Adjust confidence threshold
 - Real-time visualization
 ### 7. `plot_yolo_metrics.py`
-A script to make a plot from YOLO train `results.csv` metrics.
+A script to make a plot from YOLO train `results.csv` metrics (see the output in pct. 4-5).
 ```bash
 python plot_yolo_metrics.py runs/segment/sam_yolo11-seg/results.csv plot.png
 ```
