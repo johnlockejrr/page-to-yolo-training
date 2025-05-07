@@ -200,3 +200,15 @@ We compared different training configurations to find the optimal setup for text
 - For segmentation tasks: Prefer SGD over AdamW
 - Use batch size 12 for optimal performance
 - Apply enhanced augmentation techniques for better generalization
+
+### YOLO11s: AdamW vs SGD Quick Comparison
+
+| Metric          | AdamW (exp_improved3) | SGD (exp_improved4) | Improvement |
+|-----------------|----------------------|-------------------|-------------|
+| Box Loss        | 0.291               | 0.285            | +2.1%       |
+| Seg Loss        | 0.891               | 0.887            | +0.4%       |
+| mAP50(B)        | 0.991               | 0.992            | +0.1%       |
+| mAP50(M)        | 0.913               | 0.914            | +0.1%       |
+| Training Time   | ~12000s             | ~11000s          | -8.3%       |
+
+**Summary**: SGD optimizer provided marginal but consistent improvements across all metrics while being faster to train. The differences, though small, suggest SGD is better suited for segmentation tasks. 
