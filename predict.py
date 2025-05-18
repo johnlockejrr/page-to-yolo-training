@@ -4,7 +4,9 @@ import cv2
 import numpy as np
 from ultralytics import YOLO
 
-def predict_and_visualize(model_path: str, image_path: str, output_path: str = None, conf_threshold: float = 0.25):
+imgsz = [640, 512]
+
+def predict_and_visualize(model_path: str, image_path: str, output_path: str = None, imgsz: tuple[int, int], conf_threshold: float = 0.25):
     """Run inference and visualize results."""
     # Load the model
     model = YOLO(model_path)
@@ -15,7 +17,7 @@ def predict_and_visualize(model_path: str, image_path: str, output_path: str = N
         raise ValueError(f"Could not read image at {image_path}")
     
     # Run inference
-    results = model.predict(image, conf=conf_threshold)[0]
+    results = model.predict(image, imgsz=imgsz, conf=conf_threshold)[0]
     
     # Create a copy of the image for visualization
     vis_image = image.copy()
@@ -73,7 +75,7 @@ def main():
     args = parser.parse_args()
     
     try:
-        predict_and_visualize(args.model, args.image, args.output, args.conf)
+        predict_and_visualize(args.model, args.image, args.output, imgsz, args.conf)
     except Exception as e:
         print(f"Error during prediction: {str(e)}")
         return 1
